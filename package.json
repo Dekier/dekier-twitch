@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "node-sass": "^4.11.0",
+    "nuxt-sass-resources-loader": "^2.0.5",
+    "sass-loader": "^7.1.0"
+  }
+}

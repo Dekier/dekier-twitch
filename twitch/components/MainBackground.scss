@@ -1,0 +1,80 @@
+.MainBackground {
+  &__main-container {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #292727;
+    // background: linear-gradient(-90deg, #189ad3, 	#71c7ec);
+    // background-image: url('/images/background.png');
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: contain;
+    position: absolute;
+  }
+
+  &__small-balt{
+    width: 5px;
+    height: 20%;
+    top: 50%;
+    right: -10px;
+    position: absolute;
+    background-image: linear-gradient(#189ad3, 	#71c7ec);
+    animation: diagonal 15s infinite linear;
+    transform: skewX( -45deg ) rotate(-45deg);
+    &:nth-child(2) {
+      top: 10%;
+    }
+    &:nth-child(3) {
+      top: 80%;
+    }
+  }
+
+  &__middle-balt {
+    height: 100%;
+    width: 15%;
+    background: linear-gradient(-45deg, #71c7ec, #23A6D5);
+    background-size: 400% 400%;
+    animation: Gradient 2s ease infinite;
+    position: relative;
+    left: 40px;
+  }
+
+  &__big-balt {
+    width: 25%;
+    height: 200vh;
+    position: relative;
+    top: -50vh;
+    background: #383838;
+    transform: rotate(45deg);
+
+    &:nth-child(2) {
+      width: 10%;
+    }
+
+    &:nth-child(3) {
+      width: 15%;
+    }
+
+  }
+}
+
+// @-webkit-keyframes diagonal {
+//   0%       { transform: skewX( -45deg ) translatey(40vh) }
+//   50%      { transform: skewX( -45deg ) translatey(-55vh); }
+//   100%     { transform: skewX( -45deg ) translatey(40vh) }
+// }
+
+@-webkit-keyframes diagonal {
+  0%       { top: 0 }
+  50%      { top: 100vh }
+  100%     { top: 0 }
+}
+
+@keyframes Gradient {
+  0%{background-position:50% 0%}
+  50%{background-position:50% 100%}
+  100%{background-position:50% 0%}
+}
