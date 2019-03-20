@@ -16,8 +16,71 @@
   }
 
   &__live {
-    width: 800px;
-    height: 450px;
+    width: 900px;
+    height: 508px;
     border: none;
+  }
+
+  &__live-chat {
+    border: none;
+    height: 508px;
+    width: 300px;
+  }
+
+  &__followers-container {
+    width: 1200px;
+    height: 60px;
+    margin: 0 auto;
+    background-color:rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+    padding-bottom: 30px;
+  }
+
+  &__followers {
+    position: absolute;
+    display: flex;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    // transform: translateX(40%) 
+    animation: followers 120s infinite linear;
+  }
+
+  &__follower {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+    background-size: cover;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    position: relative;
+    margin: 10px;
+    color: #25282B;
+    cursor: pointer;
+  }
+
+  &__follower-name {
+    background: #fff;
+    border-radius: 4px;
+    position: absolute;
+    padding: 2px 4px;
+    bottom: 10px;
+    z-index: 12;
+    left: 50px;
+  }
+
+  &__followers-title {
+    width: 1200px;
+    margin: 12px auto;
+    color: #fff;
+  }
+
+  
+  @-webkit-keyframes followers {
+    0%       { left: -50% }
+    50%      { left: 150%  }
+    100%     { left: -50% }
   }
 }
