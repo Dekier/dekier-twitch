@@ -1,5 +1,6 @@
 <template>
   <div class="MainCenterContainer__main-container">
+    {{mainUserData.title}}
     <div class="MainCenterContainer__live-container">
       <iframe
       class="MainCenterContainer__live"
@@ -13,7 +14,7 @@
       </iframe>
     </div>
     <div class="MainCenterContainer__followers-title">
-      Obserwujących: {{followersData.length}}
+      Obserwujących: {{followersData.length}}  Na żywo: {{mainUserData.viewer_count}}
     </div>
     <div class="MainCenterContainer__followers-container">
       <div class="MainCenterContainer__followers">
@@ -38,8 +39,12 @@
 </template>
 
 <script>
+import userStatus from '~/components/mixins/Userstatus.mixin.vue'
+
 export default {
   name: 'MainCenterContainer',
+
+  mixins: [userStatus],
 
   data () {
     return {
@@ -81,29 +86,58 @@ export default {
             return data
           })
           this.getUserData()
+          this.userStatus()
+          // this.userStatus(this.followersData.map(f => f.id))
         }
       }
       request.send()
     },
+    // getUserData () {
+    //   if (this.followersData.length) {
+    //     let params = ''
+    //     for (let i = 0; i < this.followersData.length; i++) {
+    //       if (i === 0) {
+    //         params += `login=${this.followersData[i].login}`
+    //       } else {
+    //          params += `&login=${this.followersData[i].login}`
+    //       }
+    //     }
+    //     var request = new XMLHttpRequest()
+    //     var method = 'GET'
+    //     var url = `https://api.twitch.tv/helix/users?${params}`
+    //     var async = true
+    //     request.open(method, url, async)
+    //     request.setRequestHeader('Client-ID', this.token)
+    //     request.onreadystatechange = () => {
+    //       if (request.readyState === 4 && request.status === 200) {
+    //         this.usersData = JSON.parse(request.responseText).data
+    //         return this.usersData
+    //       }
+    //     }
+    //     request.send()
+    //   }
+    // },
+
     getUserData () {
       if (this.followersData.length) {
         let params = ''
         for (let i = 0; i < this.followersData.length; i++) {
           if (i === 0) {
-            params += `login=${this.followersData[i].login}`
+            params += `${this.followersData[i].login}`
           } else {
-             params += `&login=${this.followersData[i].login}`
+             params += `,${this.followersData[i].login}`
           }
         }
         var request = new XMLHttpRequest()
         var method = 'GET'
-        var url = `https://api.twitch.tv/helix/users?${params}`
+        var url = `https://api.twitch.tv/kraken/users?login=${params}`
         var async = true
         request.open(method, url, async)
+        request.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json')
         request.setRequestHeader('Client-ID', this.token)
         request.onreadystatechange = () => {
           if (request.readyState === 4 && request.status === 200) {
-            this.usersData = JSON.parse(request.responseText).data
+            this.usersData = JSON.parse(request.responseText).users
             return this.usersData
           }
         }
@@ -113,18 +147,18 @@ export default {
 
     userBackground(data) {
       if (data) {
-        const url = this.usersData.find(u => u.id === data.id)
-        if (url && url.profile_image_url) {
-        return {'background-image': `url(${url.profile_image_url})`}
+        const url = this.usersData.find(u => u._id === data.id)
+        if (url && url.logo) {
+        return {'background-image': `url(${url.logo})`}
         }
       }
     },
 
     getUserName (data) {
        if (data) {
-        const user = this.usersData.find(u => u.id === data.id)
-        if (user && user.login) {
-          return user.login
+        const user = this.usersData.find(u => u._id === data.id)
+        if (user && user.name) {
+          return user.name
         }
       }
     }
