@@ -13,6 +13,12 @@ export default {
   components: {
     MainBackground,
     MainCenterContainer
+  },
+
+  computed: {
+  },
+
+  methods: {
   }
 }
 </script>

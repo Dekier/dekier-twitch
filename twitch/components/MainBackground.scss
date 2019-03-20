@@ -61,12 +61,6 @@
   }
 }
 
-// @-webkit-keyframes diagonal {
-//   0%       { transform: skewX( -45deg ) translatey(40vh) }
-//   50%      { transform: skewX( -45deg ) translatey(-55vh); }
-//   100%     { transform: skewX( -45deg ) translatey(40vh) }
-// }
-
 @-webkit-keyframes diagonal {
   0%       { top: 0 }
   50%      { top: 100vh }
