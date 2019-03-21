@@ -1,6 +1,8 @@
 <template>
-  <div class="MainCenterContainer__main-container">
-    {{mainUserData.title}}
+  <div v-if="userToken" class="MainCenterContainer__main-container">
+    <div class="MainCenterContainer__title-stream">
+      {{mainUserData.title}}
+    </div>
     <div class="MainCenterContainer__live-container">
       <iframe
       class="MainCenterContainer__live"
@@ -61,6 +63,9 @@ export default {
   computed: {
     token () {
       return this.$store.getters['token']
+    },
+    userToken () {
+      return this.$store.getters['user/userToken']
     },
     user_id () {
       return this.$store.getters['user_id']
