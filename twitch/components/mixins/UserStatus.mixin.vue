@@ -33,7 +33,9 @@ export default {
         if (request.readyState === 4 && request.status === 200) {
           const userData = JSON.parse(request.responseText)
           this.status = userData.data.map(s => s.type)
-          this.mainUserData = userData.data[0]
+          if (userData.data[0]) {
+            this.mainUserData = userData.data[0]
+          }
           // this.mainUserStatus = this.status[0]
           // this.viewerCount = userData.data[0].viewer_count
         }
