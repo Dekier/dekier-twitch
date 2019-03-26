@@ -37,8 +37,8 @@ export default {
   },
 
   computed: {
-    token () {
-      return this.$store.getters['token']
+    clientId () {
+      return this.$store.getters['clientId']
     }
   },
 
@@ -46,10 +46,10 @@ export default {
     // streamData () {
     //   var request = new XMLHttpRequest()
     //   var method = 'GET'
-    //   var url = `https://id.twitch.tv/oauth2/authorize?client_id=${this.token}&redirect_uri=http://localhost:3000&response_type=code&scope=openid`
+    //   var url = `https://id.twitch.tv/oauth2/authorize?client_id=${this.clientId}&redirect_uri=http://localhost:3000&response_type=code&scope=openid`
     //   var async = true
     //   request.open(method, url, async)
-    //   // request.setRequestHeader('Client-ID', this.token)
+    //   // request.setRequestHeader('Client-ID', this.clientId)
     //   request.onreadystatechange = () => {
     //     if (request.readyState === 4 && request.status === 200) {
     //       console.log(request.responseURL)
