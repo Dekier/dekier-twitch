@@ -1,9 +1,11 @@
 export const state = () => ({
-  token: 'yialthhqwtvr06wfcas0fnzcpvne3x',
-  user_id: '226325627'
+  clientId: 'yialthhqwtvr06wfcas0fnzcpvne3x',
+  user_id: '226325627',
+  clientSecret: 'xmlpu2tlnr5v7q5xv2l93bz619lhj3'
 })
 
 export const getters = {
-  token: state => state.token,
-  user_id: state => state.user_id
+  clientId: state => state.clientId,
+  user_id: state => state.user_id,
+  clientSecret: state => state.clientSecret
 }

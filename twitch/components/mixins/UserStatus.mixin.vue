@@ -25,10 +25,10 @@ export default {
       // }
       var request = new XMLHttpRequest()
       var method = 'GET'
-      var url = `https://api.twitch.tv/helix/streams?first=100&client_id=${this.token}&user_login=Dekier`
+      var url = `https://api.twitch.tv/helix/streams?first=100&client_id=${this.clientId}&user_login=Dekier`
       var async = true
       request.open(method, url, async)
-      request.setRequestHeader('Client-ID', this.token)
+      request.setRequestHeader('Client-ID', this.clientId)
       request.onreadystatechange = () => {
         if (request.readyState === 4 && request.status === 200) {
           const userData = JSON.parse(request.responseText)

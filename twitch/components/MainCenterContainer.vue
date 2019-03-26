@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userToken" class="MainCenterContainer__main-container">
+  <div class="MainCenterContainer__main-container">
     <div class="MainCenterContainer__title-stream">
       {{mainUserData.title}}
     </div>
@@ -19,23 +19,28 @@
       Obserwujących: {{followersData.length}}  Na żywo: {{mainUserData.viewer_count}}
     </div>
     <div class="MainCenterContainer__followers-container">
-      <div class="MainCenterContainer__followers">
-        <a
-        v-for="user in followersData"
-        :key="user.id"
-        target="_blank"
-        :href="`https://www.twitch.tv/${user.login}`"
-        @mouseover="followerId = user.id"
-        @mouseleave="followerId = 0"
-        class="MainCenterContainer__follower"
-        :style="userBackground(user)">
-          <div
-          v-if="followerId === user.id"
-          class="MainCenterContainer__follower-name">
-            {{ getUserName(user) }}
-          </div>
-        </a>
-      </div>
+      <carousel
+      :adjustableHeight="true"
+      :loop="true"
+      :autoplay="false"
+      :perPageCustom="[[768, 10], [1024, 1]]"
+      :autoplayTimeout="2000">
+          <slide
+          v-for="user in followersData"
+          :key="user.id"
+          target="_blank"
+          :href="`https://www.twitch.tv/${user.login}`"
+          @mouseover="followerId = user.id"
+          @mouseleave="followerId = 0"
+          class="MainCenterContainer__follower"
+          :style="userBackground(user)">
+            <div
+            v-if="followerId === user.id"
+            class="MainCenterContainer__follower-name">
+              {{ getUserName(user) }}
+            </div>
+          </slide>
+      </carousel>
     </div>
   </div>
 </template>
@@ -61,8 +66,8 @@ export default {
   },
   
   computed: {
-    token () {
-      return this.$store.getters['token']
+    clientId () {
+      return this.$store.getters['clientId']
     },
     userToken () {
       return this.$store.getters['user/userToken']
@@ -79,7 +84,7 @@ export default {
       var url = `https://api.twitch.tv/helix/users/follows?to_id=${this.user_id}&first=100`
       var async = true
       request.open(method, url, async)
-      request.setRequestHeader('Client-ID', this.token)
+      request.setRequestHeader('Client-ID', this.clientId)
       request.onreadystatechange = () => {
         if (request.readyState === 4 && request.status === 200) {
           var data = JSON.parse(request.responseText)
@@ -97,31 +102,6 @@ export default {
       }
       request.send()
     },
-    // getUserData () {
-    //   if (this.followersData.length) {
-    //     let params = ''
-    //     for (let i = 0; i < this.followersData.length; i++) {
-    //       if (i === 0) {
-    //         params += `login=${this.followersData[i].login}`
-    //       } else {
-    //          params += `&login=${this.followersData[i].login}`
-    //       }
-    //     }
-    //     var request = new XMLHttpRequest()
-    //     var method = 'GET'
-    //     var url = `https://api.twitch.tv/helix/users?${params}`
-    //     var async = true
-    //     request.open(method, url, async)
-    //     request.setRequestHeader('Client-ID', this.token)
-    //     request.onreadystatechange = () => {
-    //       if (request.readyState === 4 && request.status === 200) {
-    //         this.usersData = JSON.parse(request.responseText).data
-    //         return this.usersData
-    //       }
-    //     }
-    //     request.send()
-    //   }
-    // },
 
     getUserData () {
       if (this.followersData.length) {
@@ -139,7 +119,7 @@ export default {
         var async = true
         request.open(method, url, async)
         request.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json')
-        request.setRequestHeader('Client-ID', this.token)
+        request.setRequestHeader('Client-ID', this.clientId)
         request.onreadystatechange = () => {
           if (request.readyState === 4 && request.status === 200) {
             this.usersData = JSON.parse(request.responseText).users

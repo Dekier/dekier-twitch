@@ -33,19 +33,22 @@
   &__btn-connect {
     margin: 50px auto 0px;
     text-decoration: none;
-    color: #fff;
-    background: #23A6D5;
-    border-radius: 4px;
+    color: $color-white;
+    background: $color-twitch;
     padding: 6px 8px;
     cursor: pointer;
+  }
+
+  &__icon-twitch {
+    position: relative;
+    top: 2px;
   }
 
   &__btn-why {
     margin: 50px auto 0px;
     text-decoration: none;
     color: #fff;
-    background: #23A6D5;
-    border-radius: 4px;
+    background: $color-main-blue;
     padding: 6px 8px;
     cursor: pointer;
   }
@@ -61,12 +64,30 @@
   &__more-info-title {
     text-align: center;
     color: #fff;
-    margin-bottom: 20px;
+    font-size: 18px;
+    margin: 40px 0;
   }
 
   &__more-info-subtitle {
     color: #fff;
     text-align: center;
     margin-bottom: 20px;
+  }
+
+  &__more-info-text {
+    color: #fff;
+    margin-top: 20px;
+  }
+
+  &__info {
+    margin-top: 20px;
+  }
+
+  &__btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    color: #fff;
+    cursor: pointer;
   }
 }

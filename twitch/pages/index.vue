@@ -1,9 +1,12 @@
 <template>
   <div class="container">
     <MainBackground />
-    <MainCenterContainer/>
+    <MainCenterContainer
+    v-if="!activeAddAppDropdown"/>
     <AddAppForUser
-    :userTokenUrl="userTokenUrl"/>
+    v-if="activeAddAppDropdown"
+    :userCodeUrl="userCodeUrl"
+    @withoutLogin="withoutLogin"/>
   </div>
 </template>
 
@@ -21,48 +24,77 @@ export default {
 
   data () {
     return {
-      userTokenUrl: ''
+      userCodeUrl: '',
+      activeAddAppDropdown: true
     }
   },
 
   mounted () {
-    this.userGetToken()
-    this.checkUserToken()
+    this.getUserTokenData()
+    this.getUserCode()
+    this.checkUserCode()
   },
 
   computed: {
-    token () {
-      return this.$store.getters['token']
+    clientId () {
+      return this.$store.getters['clientId']
     },
-    userToken () {
-      return this.$store.getters['user/userToken']
+    clientSecret () {
+      return this.$store.getters['clientSecret']
+    },
+    userTokenData () {
+      return this.$store.getters['user/userTokenData']
     }
   },
 
   methods: {
-    userGetToken () {
+    getUserTokenData () {
+      this.$store.dispatch('user/getUserTokenData')
+      .then(
+        data => {
+          console.log(this.$store.getters['user/userTokenData'])
+        }
+      )
+    },
+    getUserCode () {
       var request = new XMLHttpRequest()
       var method = 'GET'
-      var url = `https://id.twitch.tv/oauth2/authorize?client_id=${this.token}&redirect_uri=http://localhost:3000&response_type=code&scope=openid`
+      var url = `https://id.twitch.tv/oauth2/authorize?client_id=${this.clientId}&redirect_uri=http://localhost:3000&response_type=code&scope=openid&state=siematumarcin`
       var async = true
       request.open(method, url, async)
       request.onreadystatechange = () => {
         if (request.readyState === 4 && request.status === 200) {
-          this.userTokenUrl = request.responseURL
+          this.userCodeUrl = request.responseURL
         }
       }
       request.send()
     },
-
-    checkUserToken () {
-      this.$store.dispatch('user/getUserTokenLocalStorage')
+    checkUserCode () {
+      this.$store.dispatch('user/getUserCodeLocalStorage')
       .then(
         data => {
-          if (this.$route.query && this.$route.query.code && !this.userToken) {
-            this.$store.dispatch('user/setUserToken', this.$route.query.code)
+          if (this.$route.query && this.$route.query.code) {
+            this.getUserToken( this.$route.query.code)
           }
         }
       )
+    },
+    getUserToken (code) {
+      var request = new XMLHttpRequest()
+      var method = 'POST'
+      var url = `https://id.twitch.tv/oauth2/token?client_id=${this.clientId}&client_secret=${this.clientSecret}&code=${code}&grant_type=authorization_code&redirect_uri=http://localhost:3000`
+      var async = true
+      request.open(method, url, async)
+      request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status === 200) {
+          const userTokenData = request.response
+          this.$store.dispatch('user/setUserToken', userTokenData)
+        }
+      }
+      request.send()
+    },
+    withoutLogin () {
+      this.activeAddAppDropdown = false
     }
   }
 }

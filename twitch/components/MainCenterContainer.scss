@@ -34,7 +34,7 @@
     background-color:rgba(0, 0, 0, 0.3);
     overflow: hidden;
     position: relative;
-    padding-bottom: 30px;
+    padding: 10px;
   }
 
   &__followers {
@@ -56,7 +56,7 @@
     background-repeat: no-repeat;
     border-radius: 4px;
     position: relative;
-    margin: 10px;
+    margin: 0 10px 0;
     color: #25282B;
     cursor: pointer;
   }
@@ -84,7 +84,6 @@
     color: #fff;
   }
 
-  
   @-webkit-keyframes followers {
     0%       { left: -50% }
     50%      { left: 150%  }
