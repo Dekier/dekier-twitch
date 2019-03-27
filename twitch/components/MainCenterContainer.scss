@@ -9,6 +9,22 @@
     justify-content: center;
   }
 
+  &__show-app-for-user {
+    text-decoration: none;
+    color: $color-white;
+    background: $color-twitch;
+    padding: 6px 8px;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    animation-name: btnRotate;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+  }
+
   &__live-container {
     display: flex;
     flex-direction: row;
@@ -88,5 +104,13 @@
     0%       { left: -50% }
     50%      { left: 150%  }
     100%     { left: -50% }
+  }
+
+  @-webkit-keyframes btnRotate {
+    0%       { transform: rotate(0) }
+    1%      { transform: rotate(10deg)  }
+    2%      { transform: rotate(0)  }
+    3%      { transform: rotate(-10deg)  }
+    4%     { transform: rotate(0) }
   }
 }

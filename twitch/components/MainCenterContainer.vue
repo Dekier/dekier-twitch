@@ -1,5 +1,16 @@
 <template>
   <div class="MainCenterContainer__main-container">
+    <div
+    v-if="!userTokenData"
+    @click="showAppForUser"
+    class="MainCenterContainer__show-app-for-user">
+      <svg
+      class="AddAppForUser__icon-twitch"
+      viewBox="0 0 128 134" width="14">
+        <path d="M9 0L0 23v94h32v17h18l17-17h26l35-35V0H9zm107 76L96 96H64l-17 17V96H20V12h96v64zM96 35v35H84V35h12zm-32 0v35H52V35h12z" fill="#fff" fill-rule="evenodd"/>
+      </svg>
+        Połącz z Twitch
+    </div>
     <div class="MainCenterContainer__title-stream">
       {{mainUserData.title}}
     </div>
@@ -19,28 +30,23 @@
       Obserwujących: {{followersData.length}}  Na żywo: {{mainUserData.viewer_count}}
     </div>
     <div class="MainCenterContainer__followers-container">
-      <carousel
-      :adjustableHeight="true"
-      :loop="true"
-      :autoplay="false"
-      :perPageCustom="[[768, 10], [1024, 1]]"
-      :autoplayTimeout="2000">
-          <slide
-          v-for="user in followersData"
-          :key="user.id"
-          target="_blank"
-          :href="`https://www.twitch.tv/${user.login}`"
-          @mouseover="followerId = user.id"
-          @mouseleave="followerId = 0"
-          class="MainCenterContainer__follower"
-          :style="userBackground(user)">
-            <div
-            v-if="followerId === user.id"
-            class="MainCenterContainer__follower-name">
-              {{ getUserName(user) }}
-            </div>
-          </slide>
-      </carousel>
+      <div class="MainCenterContainer__followers">
+        <div
+        v-for="user in followersData"
+        :key="user.id"
+        target="_blank"
+        :href="`https://www.twitch.tv/${user.login}`"
+        @mouseover="followerId = user.id"
+        @mouseleave="followerId = 0"
+        class="MainCenterContainer__follower"
+        :style="userBackground(user)">
+          <div
+          v-if="followerId === user.id"
+          class="MainCenterContainer__follower-name">
+            {{ getUserName(user) }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -74,6 +80,9 @@ export default {
     },
     user_id () {
       return this.$store.getters['user_id']
+    },
+    userTokenData () {
+      return this.$store.getters['user/userTokenData']
     }
   },
 
@@ -146,6 +155,9 @@ export default {
           return user.name
         }
       }
+    },
+    showAppForUser () {
+      this.$emit('showAppForUser')
     }
   }
 }
