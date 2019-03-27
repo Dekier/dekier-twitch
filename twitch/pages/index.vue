@@ -1,7 +1,9 @@
 <template>
   <div class="container">
-    <MainBackground />
+    <LoadingContent/>
+    <MainBackground/>
     <MainCenterContainer
+    @showAppForUser="showAppForUser"
     v-if="!activeAddAppDropdown"/>
     <AddAppForUser
     v-if="activeAddAppDropdown"
@@ -14,12 +16,14 @@
 import MainBackground from '~/components/MainBackground.vue'
 import MainCenterContainer from '~/components/MainCenterContainer.vue'
 import AddAppForUser from '~/components/AddAppForUser.vue'
+import LoadingContent from '~/components/LoadingContent.vue'
 
 export default {
   components: {
     MainBackground,
     MainCenterContainer,
-    AddAppForUser
+    AddAppForUser,
+    LoadingContent
   },
 
   data () {
@@ -95,6 +99,9 @@ export default {
     },
     withoutLogin () {
       this.activeAddAppDropdown = false
+    },
+    showAppForUser () {
+      this.activeAddAppDropdown = true
     }
   }
 }

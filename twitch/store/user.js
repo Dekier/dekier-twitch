@@ -6,7 +6,8 @@ export const state = () => ({
 })
 
 export const getters = {
-  userCode: state => state.userCode
+  userCode: state => state.userCode,
+  userTokenData: state => state.userTokenData
 }
 
 export const actions = {
