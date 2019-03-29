@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <LoadingContent/>
     <MainBackground/>
     <MainCenterContainer
     @showAppForUser="showAppForUser"
@@ -16,14 +15,12 @@
 import MainBackground from '~/components/MainBackground.vue'
 import MainCenterContainer from '~/components/MainCenterContainer.vue'
 import AddAppForUser from '~/components/AddAppForUser.vue'
-import LoadingContent from '~/components/LoadingContent.vue'
 
 export default {
   components: {
     MainBackground,
     MainCenterContainer,
-    AddAppForUser,
-    LoadingContent
+    AddAppForUser
   },
 
   data () {
@@ -37,6 +34,9 @@ export default {
     this.getUserTokenData()
     this.getUserCode()
     this.checkUserCode()
+    if (this.userTokenData) {
+      this.activeAddAppDropdown = false
+    }
   },
 
   computed: {
@@ -46,19 +46,14 @@ export default {
     clientSecret () {
       return this.$store.getters['clientSecret']
     },
-    userTokenData () {
-      return this.$store.getters['user/userTokenData']
+    userTokenData: {
+      get () { return this.$store.getters['user/userTokenData'] }
     }
   },
 
   methods: {
     getUserTokenData () {
       this.$store.dispatch('user/getUserTokenData')
-      .then(
-        data => {
-          console.log(this.$store.getters['user/userTokenData'])
-        }
-      )
     },
     getUserCode () {
       var request = new XMLHttpRequest()

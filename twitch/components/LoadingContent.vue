@@ -1,20 +1,9 @@
 <template>
   <div class="LoadingContent__main-container">
-    <div class="LoadingContent__dark-grey-balt">
-    </div>
-    <div class="LoadingContent__light-grey-balt">
-    </div>
-    <div class="LoadingContent__dark-grey-balt">
-    </div>
-    <div class="LoadingContent__light-grey-balt">
-    </div>
-    <div class="LoadingContent__dark-grey-balt">
-    </div>
-    <div class="LoadingContent__light-grey-balt">
-    </div>
-    <div class="LoadingContent__dark-grey-balt">
-    </div>
-    <div class="LoadingContent__light-grey-balt">
+    <div class="LoadingContent__dots-container">
+      <div class="dot-loader"></div>
+      <div class="dot-loader"></div>
+      <div class="dot-loader"></div>
     </div>
   </div>
 </template>
