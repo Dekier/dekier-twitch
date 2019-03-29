@@ -40,7 +40,7 @@
     right: -10px;
     position: absolute;
     background: linear-gradient(#189ad3, 	#71c7ec);
-    animation: diagonal 15s infinite linear;
+    // animation: diagonal 15s infinite linear;
     transform: skewX( -45deg ) rotate(-45deg);
 
     &--offline {
@@ -48,10 +48,7 @@
     }
 
     &:nth-child(2) {
-      animation: diagonal 14s infinite linear;
-    }
-    &:nth-child(3) {
-      animation: diagonal 16s infinite linear;
+      // animation: diagonal 14s infinite linear;
     }
   }
 
@@ -72,9 +69,9 @@
 }
 
 @-webkit-keyframes diagonal {
-  0%       { top: 0 }
-  50%      { top: 140vh }
-  100%     { top: 0 }
+  0%       { transform: translateY(-100vh) }
+  50%      { transform: translateY(50vh) }
+  100%     { transform: translateY(-100vh) }
 }
 
 @keyframes Gradient {
