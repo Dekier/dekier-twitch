@@ -31,8 +31,29 @@
         src="https://www.twitch.tv/embed/dekier/chat?darkpopout">
       </iframe>
     </div>
-    <div class="MainCenterContainer__followers-title">
-      Obserwujących: {{followersData.length}}  Na żywo: {{mainUserData.viewer_count}}
+    <div class="MainCenterContainer__main-panel">
+      <div
+      v-if="streamData && streamData.status"
+      class="MainCenterContainer__stream-title">
+        {{streamData.status}}
+      </div>
+      <div class="MainCenterContainer__stream-panel-bottom-container">
+        <div
+        v-if="streamData && streamData.game"
+        class="MainCenterContainer__stream-panel-categorie">
+          Kategoria: <span>{{streamData.game}}</span>
+        </div>
+        <div
+        v-if="streamData && streamData.views"
+        class="MainCenterContainer__stream-panel-views">
+          Wyświetlenia: <span>{{streamData.views}}</span>
+        </div>
+      </div>
+    </div> 
+    <div
+    v-if="streamData && streamData.followers"
+    class="MainCenterContainer__followers-title">
+      Obserwujących: {{streamData.followers}}
     </div>
     <div class="MainCenterContainer__followers-container">
       <div class="MainCenterContainer__scrollbar-line"/>
@@ -95,6 +116,9 @@ export default {
     },
     userTokenData () {
       return this.$store.getters['user/userTokenData']
+    },
+    streamData () {
+      return this.$store.getters['stream/streamData']
     }
   },
 

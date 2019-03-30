@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <MainBackground/>
+    <MainBackground
+    :userTokenData="userTokenData"/>
     <MainCenterContainer
     @showAppForUser="showAppForUser"
     v-if="!activeAddAppDropdown"/>
@@ -32,19 +33,22 @@ export default {
 
   mounted () {
     this.getUserTokenData()
-    this.getUserCode()
-    this.checkUserCode()
+    this.setChannelData()
     if (this.userTokenData) {
       this.activeAddAppDropdown = false
+    } else if (!this.$route.query.code) {
+      this.getUserCode()
+    } else if (this.$route.query.code) {
+      this.checkUserCode()
     }
   },
 
   computed: {
-    clientId () {
-      return this.$store.getters['clientId']
+    clientId: {
+      get () { return this.$store.getters['clientId'] }
     },
-    clientSecret () {
-      return this.$store.getters['clientSecret']
+    clientSecret: {
+      get () { return this.$store.getters['clientSecret'] }
     },
     userTokenData: {
       get () { return this.$store.getters['user/userTokenData'] }
@@ -88,6 +92,7 @@ export default {
         if (request.readyState === 4 && request.status === 200) {
           const userTokenData = request.response
           this.$store.dispatch('user/setUserToken', userTokenData)
+          this.activeAddAppDropdown = false
         }
       }
       request.send()
@@ -97,6 +102,16 @@ export default {
     },
     showAppForUser () {
       this.activeAddAppDropdown = true
+    },
+    setChannelData () {
+      const data = {
+        path: ` https://api.twitch.tv/kraken/channels/226325627`,
+        method: 'GET'
+      }
+      this.$store.dispatch('stream/setChannelData', data)
+      // .then( response => {
+      //     this.setUserData(response.data)
+      // })
     }
   }
 }
