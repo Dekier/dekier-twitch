@@ -2,9 +2,7 @@ import { resolve } from "url";
 
 export const state = () => ({
   userCode: '',
-  userTokenData: {
-    access_token: 'fksdnfk'
-  }
+  userTokenData: null
 })
 
 

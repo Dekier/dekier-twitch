@@ -40,7 +40,7 @@
     right: -10px;
     position: absolute;
     background: linear-gradient(#189ad3, 	#71c7ec);
-    // animation: diagonal 15s infinite linear;
+    animation: diagonal 15s infinite linear;
     transform: skewX( -45deg ) rotate(-45deg);
 
     &--offline {

@@ -1,9 +1,11 @@
 export const state = () => ({
-  followers: []
+  followers: [],
+  streamData: {}
 })
 
 export const getters = {
-  followersData: state => state.followers
+  followersData: state => state.followers,
+  streamData: state => state.streamData
 }
 
 export const actions = {
@@ -23,7 +25,16 @@ export const actions = {
         .then(
           data => {
             commit('assignUsersData', data)
-            resolve(response)
+          }
+        )
+    })
+  },
+  setChannelData ({commit, dispatch, rootGetters}, requestData) {
+    return new Promise((resolve, reject) => {
+      dispatch('performRequest', {path: requestData.path, method: requestData.method, headers: {'Client-ID':  rootGetters['clientId'], 'Accept': 'application/vnd.twitchtv.v5+json'}}, {root: true})
+        .then(
+          data => {
+            commit('assignChannelData', data)
           }
         )
     })
@@ -33,6 +44,8 @@ export const actions = {
 export const mutations = {
   assignUsersData (state, data) {
     state.followers = data.users
-    console.log(state.followers)
+  },
+  assignChannelData (state, data) {
+    state.streamData = data
   }
 }
