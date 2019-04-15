@@ -2,8 +2,9 @@ import { resolve } from "url";
 
 export const state = () => ({
   userCode: '',
-  userTokenData: {}
+  userTokenData: null
 })
+
 
 export const getters = {
   userCode: state => state.userCode,
@@ -23,40 +24,26 @@ export const actions = {
     getUserTokenData ({commit}) {
       commit('getUserTokenData')
     }
-  // getArticleGroups ({dispatch, commit}) {
-  //   return dispatch('performRequest', {path: `article_groups`, method: 'get'}, {root: true})
-  //     .then(
-  //       data => {
-  //         commit('lol', data)
-  //       }
-  //     )
-  // }
 }
 
 
 export const mutations = {
   setUserCode (state, data) {
     state.userCode = data
-    // localStorage.setItem('userToken', data)
   },
   assignUserTokenLocalStorage (state, data) {
     state.userTokenData = data
     localStorage.setItem('userTokenData', JSON.stringify(state.userTokenData))
-    console.log(state.userTokenData)
   },
   getUserCodeLocalStorage (state) {
     if (localStorage.getItem('userCode')) {
       state.userCode = localStorage.getItem('userCode')
     }
   },
-  getUserTokenData () {
+  getUserTokenData (state) {
     if (localStorage.getItem('userTokenData')) {
-      state.userTokenData = JSON.parse(localStorage.getItem('userTokenData'))
-      console.log(state.userTokenData)
+      state.userTokenData = JSON.parse(JSON.parse(localStorage.getItem('userTokenData')))
     }
   }
-  // lol (state, data) {
-  //   console.log(data)
-  // }
 }
 

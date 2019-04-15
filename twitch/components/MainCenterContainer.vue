@@ -15,33 +15,60 @@
       {{mainUserData.title}}
     </div>
     <div class="MainCenterContainer__live-container">
+      <LoadingContent v-if="!(streamLoaded && chatLoaded)"/>
       <iframe
       class="MainCenterContainer__live"
+      :class="{'MainCenterContainer__live--active': (streamLoaded && chatLoaded)}"
       allowfullscreen=true
+      @load="streamLoaded = true"
       src="http://player.twitch.tv/?allowfullscreen&channel=Dekier&origin=http%3A%2F%2Flocalhost%3A3000"/>
       <iframe
         class="MainCenterContainer__live-chat"
+        :class="{'MainCenterContainer__live-chat--active': (streamLoaded && chatLoaded)}"
         scrolling="true"
         id="Dekier"
+        @load="chatLoaded = true"
         src="https://www.twitch.tv/embed/dekier/chat?darkpopout">
       </iframe>
     </div>
-    <div class="MainCenterContainer__followers-title">
-      Obserwujących: {{followersData.length}}  Na żywo: {{mainUserData.viewer_count}}
+    <div class="MainCenterContainer__main-panel">
+      <div
+      v-if="streamData && streamData.status"
+      class="MainCenterContainer__stream-title">
+        {{streamData.status}}
+      </div>
+      <div class="MainCenterContainer__stream-panel-bottom-container">
+        <div
+        v-if="streamData && streamData.game"
+        class="MainCenterContainer__stream-panel-categorie">
+          Kategoria: <span>{{streamData.game}}</span>
+        </div>
+        <div
+        v-if="streamData && streamData.views"
+        class="MainCenterContainer__stream-panel-views">
+          Wyświetlenia: <span>{{streamData.views}}</span>
+        </div>
+      </div>
+    </div> 
+    <div
+    v-if="streamData && streamData.followers"
+    class="MainCenterContainer__followers-title">
+      Obserwujących: {{streamData.followers}}
     </div>
     <div class="MainCenterContainer__followers-container">
+      <div class="MainCenterContainer__scrollbar-line"/>
       <div class="MainCenterContainer__followers">
         <div
         v-for="user in followersData"
-        :key="user.id"
+        :key="user._id"
         target="_blank"
-        :href="`https://www.twitch.tv/${user.login}`"
-        @mouseover="followerId = user.id"
+        :href="`https://www.twitch.tv/${user.name}`"
+        @mouseover="followerId = user._id"
         @mouseleave="followerId = 0"
         class="MainCenterContainer__follower"
         :style="userBackground(user)">
           <div
-          v-if="followerId === user.id"
+          v-if="followerId === user._id"
           class="MainCenterContainer__follower-name">
             {{ getUserName(user) }}
           </div>
@@ -53,17 +80,23 @@
 
 <script>
 import userStatus from '~/components/mixins/Userstatus.mixin.vue'
+import LoadingContent from '~/components/LoadingContent.vue'
 
 export default {
   name: 'MainCenterContainer',
 
   mixins: [userStatus],
 
+  components: {
+    LoadingContent
+  },
+
   data () {
     return {
-      followersData: [],
       usersData: [],
-      followerId: 0
+      followerId: 0,
+      chatLoaded: false,
+      streamLoaded: false
     }
   },
 
@@ -72,8 +105,8 @@ export default {
   },
   
   computed: {
-    clientId () {
-      return this.$store.getters['clientId']
+    followersData () {
+      return this.$store.getters['stream/followersData']
     },
     userToken () {
       return this.$store.getters['user/userToken']
@@ -83,77 +116,52 @@ export default {
     },
     userTokenData () {
       return this.$store.getters['user/userTokenData']
+    },
+    streamData () {
+      return this.$store.getters['stream/streamData']
     }
   },
 
   methods: {
     followers () {
-      var request = new XMLHttpRequest()
-      var method = 'GET'
-      var url = `https://api.twitch.tv/helix/users/follows?to_id=${this.user_id}&first=100`
-      var async = true
-      request.open(method, url, async)
-      request.setRequestHeader('Client-ID', this.clientId)
-      request.onreadystatechange = () => {
-        if (request.readyState === 4 && request.status === 200) {
-          var data = JSON.parse(request.responseText)
-          this.followersData = data.data.map(u => {
-            const data = {
-              login: u.from_name,
-              id: u.from_id
-            }
-            return data
-          })
-          this.getUserData()
-          this.userStatus()
-          // this.userStatus(this.followersData.map(f => f.id))
-        }
+      const data = {
+        path: `https://api.twitch.tv/helix/users/follows?to_id=${this.user_id}&first=100`,
+        method: 'GET'
       }
-      request.send()
+      this.$store.dispatch('stream/setFollowers', data)
+      .then( response => {
+          this.setUserData(response.data)
+      })
     },
 
-    getUserData () {
-      if (this.followersData.length) {
+    setUserData (data) {
+      if (data) {
         let params = ''
-        for (let i = 0; i < this.followersData.length; i++) {
+        for (let i = 0; i < data.length; i++) {
           if (i === 0) {
-            params += `${this.followersData[i].login}`
+            params += `${data[i].from_name}`
           } else {
-             params += `,${this.followersData[i].login}`
+             params += `,${data[i].from_name}`
           }
         }
-        var request = new XMLHttpRequest()
-        var method = 'GET'
-        var url = `https://api.twitch.tv/kraken/users?login=${params}`
-        var async = true
-        request.open(method, url, async)
-        request.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json')
-        request.setRequestHeader('Client-ID', this.clientId)
-        request.onreadystatechange = () => {
-          if (request.readyState === 4 && request.status === 200) {
-            this.usersData = JSON.parse(request.responseText).users
-            return this.usersData
-          }
+
+        const requestData = {
+          path: `https://api.twitch.tv/kraken/users?login=${params}`,
+          method: 'GET'
         }
-        request.send()
+        this.$store.dispatch('stream/setUserData', requestData)
       }
     },
 
     userBackground(data) {
       if (data) {
-        const url = this.usersData.find(u => u._id === data.id)
-        if (url && url.logo) {
-        return {'background-image': `url(${url.logo})`}
-        }
+        return {'background-image': `url(${data.logo})`}
       }
     },
 
     getUserName (data) {
-       if (data) {
-        const user = this.usersData.find(u => u._id === data.id)
-        if (user && user.name) {
-          return user.name
-        }
+      if (data) {
+        return data.name
       }
     },
     showAppForUser () {
