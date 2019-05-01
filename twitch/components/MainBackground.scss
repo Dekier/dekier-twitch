@@ -7,8 +7,6 @@
     flex-direction: row;
     justify-content: space-between;
     background: #292727;
-    // background: linear-gradient(-90deg, #189ad3, 	#71c7ec);
-    // background-image: url('/images/background.png');
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: contain;
@@ -33,49 +31,62 @@
 
   }
 
-  &__small-balt{
+  &__small-balt {
     width: 5px;
     height: 20%;
     top: 50%;
     right: -10px;
     position: absolute;
-    background: linear-gradient(#189ad3, 	#71c7ec);
-    animation: diagonal 15s infinite linear;
-    transform: skewX( -45deg ) rotate(-45deg);
+    background: linear-gradient(rgb(39, 163, 86), $color-main-blue);
+    animation: diagonal 60s infinite linear;
+    transform: skewX(-45deg) rotate(-45deg);
+    will-change: transform;
 
     &--offline {
-      background: linear-gradient($color-main-red, 	#FF3232);
-    }
-
-    &:nth-child(2) {
-      // animation: diagonal 14s infinite linear;
+      background: linear-gradient($color-main-red, #FF3232);
     }
   }
 
   &__middle-balt {
     height: 100%;
     width: 15%;
-    background: linear-gradient(-45deg, #71c7ec, $color-main-blue);
+    background: linear-gradient(-45deg, rgb(39, 163, 86), $color-main-blue);
     background-size: 400% 400%;
     animation: Gradient 2s ease infinite;
     position: relative;
     left: 40px;
-    
+    will-change: background-position;
 
     &--offline {
-      background: linear-gradient($color-main-red, 	#FF3232);
+      background: linear-gradient($color-main-red, #FF3232);
     }
   }
 }
 
 @-webkit-keyframes diagonal {
-  0%       { transform: translateY(-100vh) }
-  50%      { transform: translateY(50vh) }
-  100%     { transform: translateY(-100vh) }
+  0% {
+    transform: translateY(-100vh)
+  }
+
+  50% {
+    transform: translateY(50vh)
+  }
+
+  100% {
+    transform: translateY(-100vh)
+  }
 }
 
 @keyframes Gradient {
-  0%{background-position:50% 0%}
-  50%{background-position:50% 100%}
-  100%{background-position:50% 0%}
+  0% {
+    background-position: 50% 0%
+  }
+
+  50% {
+    background-position: 50% 100%
+  }
+
+  100% {
+    background-position: 50% 0%
+  }
 }
