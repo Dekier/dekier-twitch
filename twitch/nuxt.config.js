@@ -15,7 +15,8 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheets', href: 'https://fonts.googleapis.com/css?family=Montserrat:200,400,500" rel="stylesheet' }
+      { rel: 'stylesheets', href: 'https://fonts.googleapis.com/css?family=Montserrat:300,400,500' },
+      { rel: 'stylesheets', href: 'https://fonts.googleapis.com/css?family=Gloria+Hallelujah' }
     ]
   },
 
@@ -28,6 +29,7 @@ export default {
   ** Global CSS
   */
   css: [
+    "aos/dist/aos.css"
     // '~assets/stylesheets/main-variables.scss'
   ],
 
@@ -39,7 +41,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~plugins/vue-friendly-iframe.js', ssr: false}
+    { src: '~plugins/vue-friendly-iframe.js', ssr: false },
+    { src: '~plugins/aos.js', ssr: false }
   ],
 
   /*
