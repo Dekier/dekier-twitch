@@ -17,7 +17,7 @@
     "axios": "^0.18.0",
     "cross-env": "^5.2.0",
     "node-sass": "^4.11.0",
-    "nuxt": "^2.5.1",
+    "nuxt": "^2.6.3",
     "nuxt-sass-resources-loader": "^2.0.5",
     "sass-loader": "^7.1.0",
     "vue-friendly-iframe": "^0.12.0"
